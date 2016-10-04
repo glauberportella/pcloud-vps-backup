@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<buildpath>
-	<buildpathentry kind="src" path="bin/pcloud"/>
-	<buildpathentry kind="src" path="src/pCloud/Exception"/>
-	<buildpathentry kind="src" path="src/pCloud/Json"/>
-	<buildpathentry kind="src" path="vendor"/>
-	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
-</buildpath>
