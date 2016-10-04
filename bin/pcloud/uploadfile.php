@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 use \GlauberPortella\pCloud\Json\DigestAuth;
 use \GlauberPortella\pCloud\Json\UploadFile;
@@ -14,10 +14,10 @@ if ($argc < 5) {
 }
 
 // input params from commandline
-$email = preg_replace('/--email=/i', '', $args[1]);
-$pass = preg_replace('/--pass=/i', '', $args[2]);
-$folder = preg_replace('/--folder=/i', '', $args[3]);
-$filePath = $args[4];
+$email = preg_replace('/--email=/i', '', $argv[1]);
+$pass = preg_replace('/--pass=/i', '', $argv[2]);
+$folder = preg_replace('/--folder=/i', '', $argv[3]);
+$filePath = $argv[4];
 
 try {
     // digest auth

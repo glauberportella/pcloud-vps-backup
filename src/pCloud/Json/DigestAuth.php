@@ -21,10 +21,10 @@ class DigestAuth extends JsonApi
         $digest = $this->getDigest();
         $passdigest = sha1($this->pass . sha1(strtolower($this->email)) . $digest);
 
-        $params = sprintf('%s&%s/%s/%s', build_query_params(array(
+        $params = sprintf('%s&%s/%s/%s', http_build_query(array(
                 'getauth' => 1,
                 'logout' => 1,
-            ), $this->email, $passdigest, $digest);
+            )), $this->email, $passdigest, $digest);
 
         $response = Request::get(JsonApi::USERINFO_ENDPOINT . '?' . $params)
             ->sendsJson()

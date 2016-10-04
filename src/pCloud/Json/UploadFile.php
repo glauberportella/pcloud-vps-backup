@@ -10,7 +10,7 @@ class UploadFile extends JsonApi
     {
         $this->authenticationToken = $authenticationToken;
     }
-    
+
     /**
      * Upload a file using the PUT method
      * @return array
