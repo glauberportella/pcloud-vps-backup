@@ -1,0 +1,19 @@
+{
+    "name": "glauberportella/pcloud-vps-backup",
+    "description": "Backup files from a Linux VPS to pCloud service.",
+    "autoload": {
+      "psr-4": {
+        "GlauberPortella\\": "src/"
+      }
+    },
+    "require": {
+        "nategood/httpful": "^0.2.20"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Glauber Portella",
+            "email": "glauberportella@gmail.com"
+        }
+    ]
+}
