@@ -1,6 +1,6 @@
 <?php
 
-namespace GlauberPortell\pCloud\Json;
+namespace GlauberPortella\pCloud\Json;
 
 use \Httpful\Request;
 
@@ -18,8 +18,12 @@ class UploadFile extends JsonApi
     public function put($filePath, array $params)
     {
         if (!file_exists($filePath))
-            thrown new \InvalidArgumentException('File to upload does not exist. You passed: "'.$filePath.'" to UploadFile::put().');
+            throw new \InvalidArgumentException('File to upload does not exist. You passed: "'.$filePath.'" to UploadFile::put().');
 
+        if (!array_key_exists('filename', $params)) {
+            $params['filename'] = basename($filePath);
+        }
+        
         $queryParams = http_build_query(array_merge($params, array('auth' => $this->authenticationToken)));
         $response = Request::put(JsonApi::FILE_UPLOAD_ENDPOINT.'?'.$queryParams)
             ->sendsJson()
