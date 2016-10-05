@@ -22,16 +22,38 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-# Inputs
-EMAIL="webmaster@macweb.com.br"
-PWD="mac212400"
-FOLDER="/cloud4"
-FILEPATH="/var/vmail/vmail1/automilmultimarcas.com.br.tar.gz"
-
 # API endpoints
 ENDPOINT_GETDIGEST="https://api.pcloud.com/getdigest"
 ENDPOINT_USERINFO="https://api.pcloud.com/userinfo"
 ENDPOINT_UPLOAD="https://api.pcloud.com/uploadfile"
+
+
+# Inputs
+for i in "$@"
+do
+case $i in
+    -e=*|--email=*)
+    EMAIL="${i#*=}"
+    shift # past argument=value
+    ;;
+    -p=*|--password=*)
+    PWD="${i#*=}"
+    shift # past argument=value
+    ;;
+    -f=*|--folder=*)
+    FOLDER="${i#*=}"
+    shift # past argument=value
+    ;;
+    *)
+    FILEPATH="${i}" # file
+    ;;
+esac
+done
+
+echo "E-MAIL: $EMAIL"
+echo "PWD: $PWD"
+echo "FOLDER: $FOLDER"
+echo "FILEPATH: $FILEPATH"
 
 # create digest
 DIGEST=$(curl --silent -X GET -H 'ContentType: application/json' $ENDPOINT_GETDIGEST | python -c "import sys, json; print json.load(sys.stdin)['digest']")
@@ -42,7 +64,7 @@ AUTH=$(curl --silent -X GET -H 'ContentType: application/json' -G $ENDPOINT_USER
 FILENAME=$(php -r "echo basename('$FILEPATH');")
 RESULT=$(curl --silent -F "path=$FOLDER" -F "filename=$FILENAME" -F "auth=$AUTH" -F "file=@$FILEPATH" $ENDPOINT_UPLOAD | python -c "import sys, json; print json.load(sys.stdin)")
 
-echo $RESULT
+echo "$FILEPATH: $RESULT"
 
 #if [ "$RESULT" != "0" ]; then
 #    echo "Upload failed."
