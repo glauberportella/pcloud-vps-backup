@@ -28,5 +28,5 @@ for dir in */
 do
   base=$(basename "$dir")
   tar -czf "${base}.tar.gz" "$dir"
-  ~/pcloud-vps-backup/bin/pcloud/uploadfile.sh -e=webmaster@macweb.com.br -p=mac212400 -f=/cloud4 "${base}.tar.gz" >> /var/log/pcloud-backup.log
 done
+
