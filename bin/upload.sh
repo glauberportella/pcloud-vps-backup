@@ -22,11 +22,15 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
+if [[ $# -ne 1 ]]; then
+    echo "Use upload.sh -e=<user email> -p=<user password> -f=<pCloud folder path> file"
+    exit 1
+fi
+
 # API endpoints
 ENDPOINT_GETDIGEST="https://api.pcloud.com/getdigest"
 ENDPOINT_USERINFO="https://api.pcloud.com/userinfo"
 ENDPOINT_UPLOAD="https://api.pcloud.com/uploadfile"
-
 
 # Inputs
 for i in "$@"
@@ -50,11 +54,6 @@ case $i in
 esac
 done
 
-echo "E-MAIL: $EMAIL"
-echo "PWD: $PWD"
-echo "FOLDER: $FOLDER"
-echo "FILEPATH: $FILEPATH"
-
 # create digest
 DIGEST=$(curl --silent -X GET -H 'ContentType: application/json' $ENDPOINT_GETDIGEST | python -c "import sys, json; print json.load(sys.stdin)['digest']")
 PASSDIGEST=$(php -r "echo sha1('$PWD'.sha1(strtolower('$EMAIL')).'$DIGEST');")
@@ -65,9 +64,3 @@ FILENAME=$(php -r "echo basename('$FILEPATH');")
 RESULT=$(curl --silent -F "path=$FOLDER" -F "filename=$FILENAME" -F "auth=$AUTH" -F "file=@$FILEPATH" $ENDPOINT_UPLOAD | python -c "import sys, json; print json.load(sys.stdin)")
 
 echo "$FILEPATH: $RESULT"
-
-#if [ "$RESULT" != "0" ]; then
-#    echo "Upload failed."
-#else
-#    echo "File Uploaded."
-#fi
