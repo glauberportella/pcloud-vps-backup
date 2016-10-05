@@ -43,7 +43,7 @@ echo ">> Auth: $AUTH";
 FILENAME=$(php -r "echo basename('$FILEPATH');")
 echo ">> Upload: $FILENAME";
 
-RESULT=$(curl -X POST -F 'file=@$FILEPATH' -G $ENDPOINT_UPLOAD -d path=$FOLDER -d filename=$FILENAME -d auth=$AUTH | python -c "import sys, json; print json.load(sys.stdin)['result']")
+RESULT=$(curl -X POST -F "file=@$FILEPATH" -G $ENDPOINT_UPLOAD -d path=$FOLDER -d filename=$FILENAME -d auth=$AUTH | python -c "import sys, json; print json.load(sys.stdin)['result']")
 
 if [ $RESULT -neq 0 ]; then
     echo "Upload failed."
