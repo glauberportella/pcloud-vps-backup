@@ -40,10 +40,12 @@ PASSDIGEST=$(php -r "echo sha1('$PWD'.sha1(strtolower('$EMAIL')).'$DIGEST');")
 AUTH=$(curl --silent -X GET -H 'ContentType: application/json' -G $ENDPOINT_USERINFO -d getauth=1 -d logout=1 -d username=$EMAIL -d digest=$DIGEST -d passworddigest=$PASSDIGEST | python -c "import sys, json; print json.load(sys.stdin)['auth']")
 
 FILENAME=$(php -r "echo basename('$FILEPATH');")
-RESULT=$(curl -F "file=@$FILEPATH" -F "path=$FOLDER" -F "filename=$FILENAME" -F "auth=$AUTH" $ENDPOINT_UPLOAD | python -c "import sys, json; print json.load(sys.stdin)['result']")
+RESULT=$(curl --silent -F "path=$FOLDER" -F "filename=$FILENAME" -F "auth=$AUTH" -F "file=@$FILEPATH" $ENDPOINT_UPLOAD | python -c "import sys, json; print json.load(sys.stdin)")
 
-if [ "$RESULT" != "0" ]; then
-    echo "Upload failed."
-else
-    echo "File Uploaded."
-fi
+echo $RESULT
+
+#if [ "$RESULT" != "0" ]; then
+#    echo "Upload failed."
+#else
+#    echo "File Uploaded."
+#fi
