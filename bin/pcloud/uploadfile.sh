@@ -22,8 +22,8 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-if [[ $# -ne 1 ]]; then
-    echo "Use upload.sh -e=<user email> -p=<user password> -f=<pCloud folder path> file"
+if [[ $# -ne 4 ]]; then
+    echo "Use uploadfile.sh -e=<user email> -p=<user password> -f=<pCloud folder path> file"
     exit 1
 fi
 
