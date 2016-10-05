@@ -34,17 +34,16 @@ ENDPOINT_USERINFO="https://api.pcloud.com/userinfo"
 ENDPOINT_UPLOAD="https://api.pcloud.com/uploadfile"
 
 # create digest
-DIGEST=$(curl --silent -X GET -H 'ContentType: application/json' $ENDPOINT_GETDIGEST | python -c "import sys, json; print json.load(sys.stdin)['digest']")
+DIGEST=$(curl -X GET -H 'ContentType: application/json' $ENDPOINT_GETDIGEST | python -c "import sys, json; print json.load(sys.stdin)['digest']")
 PASSDIGEST=$(php -r "echo sha1('$PWD'.sha1(strtolower('$EMAIL')).'$DIGEST');")
 # get authcode
-echo $ENDPOINT_USERINFO?getauth=1&logout=1&username=$EMAIL&digest=$DIGEST&passworddigest=$PASSDIGEST
-AUTH=$(curl --silent -X GET -H 'ContentType: application/json' $ENDPOINT_USERINFO?getauth=1&logout=1&username=$EMAIL&digest=$DIGEST&passworddigest=$PASSDIGEST | python -c "import sys, json; print json.load(sys.stdin)['auth']")
+AUTH=$(curl -X GET -H 'ContentType: application/json' -G $ENDPOINT_USERINFO -d getauth=1 -d logout=1 -d username=$EMAIL -d digest=$DIGEST -d passworddigest=$PASSDIGEST | python -c "import sys, json; print json.load(sys.stdin)['auth']")
 echo ">> Auth: $AUTH";
 
 FILENAME=$(php -r "echo basename('$FILEPATH');")
 echo ">> Upload: $FILENAME";
 
-RESULT=$(curl -X POST -F 'file=@$FILEPATH' $ENDPOINT_UPLOAD?path=$FOLDER&filename=$FILENAME&auth=$AUTH | python -c "import sys, json; print json.load(sys.stdin)['result']")
+RESULT=$(curl -X POST -F 'file=@$FILEPATH' -G $ENDPOINT_UPLOAD -d path=$FOLDER -d filename=$FILENAME -d auth=$AUTH | python -c "import sys, json; print json.load(sys.stdin)['result']")
 
 if [ $RESULT -neq 0 ]; then
     echo "Upload failed."
