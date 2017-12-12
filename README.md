@@ -1,3 +1,30 @@
+# pCloud Backup
+
+Allow to send files from a cloud or vps server to the (pCloud service)[https://www.pcloud.com]
+
+# Motivation
+
+The initial purpose of this scripts was to allow backup mail files from my Digital Ocean droplet to my pCloud account.
+
+# Example of usage
+
+Here is how I used it:
+
+```
+#!/bin/bash
+#
+# Send backup files to pCloud
+#
+
+cd /var/vmail/vmail1
+for dir in */
+do
+  base=$(basename "$dir")
+  tar -czf "${base}.tar.gz" "$dir"
+  /root/pcloud-vps-backup/bin/pcloud/uploadfile.sh -e=<your-registered-email-on-pcloud> -p=<account-password> -f=</pcloud/folder> "${base}.tar.gz"
+done
+```
+
 # The MIT License (MIT)
 
 Copyright (c) 2016 Glauber Portella <glauberportella@gmail.com>
